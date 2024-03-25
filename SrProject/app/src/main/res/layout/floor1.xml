@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <!-- Adjust the alpha value to control the opacity of the overlay -->
+    <!-- Button to go back to MapsActivity -->
+
+    <com.google.android.gms.maps.MapView
+        android:id="@+id/mapView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/liar" />
+
+    <ImageView
+        android:id="@+id/overlayImageView"
+        android:layout_width="391dp"
+        android:layout_height="624dp"
+        android:layout_gravity="center"
+        android:alpha="1.0"
+        android:contentDescription="@string/todo"
+        android:scaleType="fitXY"
+        android:src="@drawable/rhode_hall_2" />
+
+    <Button
+        android:id="@+id/backButton"
+        android:layout_width="wrap_content"
+        android:layout_height="69dp"
+        android:layout_gravity="top|center_horizontal"
+        android:layout_marginBottom="16dp"
+        android:text="@string/back" />
+</FrameLayout>
