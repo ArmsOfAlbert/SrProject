@@ -12,15 +12,7 @@
         android:layout_height="wrap_content"
         android:contentDescription="@string/liar" />
 
-    <ImageView
-        android:id="@+id/overlayImageView"
-        android:layout_width="391dp"
-        android:layout_height="500dp"
-        android:layout_gravity="center"
-        android:alpha="0.5"
-        android:contentDescription="@string/todo"
-        android:scaleType="fitXY"
-        android:src="@drawable/rhode_hall_2" />
+
 
     <Button
         android:id="@+id/backButton"
