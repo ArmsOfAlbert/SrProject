@@ -1,24 +1,21 @@
 package com.example.srproject;
 
+import android.Manifest;
 import android.app.AlertDialog;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.os.Bundle;
-
-import android.Manifest;
-
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
-
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.Objects;

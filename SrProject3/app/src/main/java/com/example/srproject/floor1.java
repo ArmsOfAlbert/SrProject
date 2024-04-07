@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.SearchView;
 
@@ -37,6 +38,7 @@ public class floor1 extends AppCompatActivity implements OnMapReadyCallback {
 
     // Declare markerGrid
     private List<List<Marker>> markerGrid = new ArrayList<>();
+    private String currentOverlayIdentifier = null; // Initialize to indicate no overlay displayed
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,41 +93,37 @@ public class floor1 extends AppCompatActivity implements OnMapReadyCallback {
             finish(); // Optional, to close this activity after navigating back
         });
 
-        // Set click listener for changing ground overlay image buttons
         Button changeOverlay1Button = findViewById(R.id.changeOverlay1Button);
-        changeOverlay1Button.setOnClickListener(v -> changeGroundOverlayImage(R.drawable.rhode1));
+        changeOverlay1Button.setOnClickListener(v -> {
+            if (!"floor1".equals(currentOverlayIdentifier)) {
+                MapUtils.changeGroundOverlayImage(googleMap, groundOverlays, polyline, R.drawable.rhode1);
+                currentOverlayIdentifier = "floor1";
+                Log.d("Current Overlay", "Current Overlay Identifier: " + currentOverlayIdentifier);
+            }
+        });
 
         Button changeOverlay2Button = findViewById(R.id.changeOverlay2Button);
-        changeOverlay2Button.setOnClickListener(v -> changeGroundOverlayImage(R.drawable.rhode2));
+        changeOverlay2Button.setOnClickListener(v -> {
+            if (!"floor2".equals(currentOverlayIdentifier)) {
+                MapUtils.changeGroundOverlayImage(googleMap, groundOverlays, polyline, R.drawable.rhode2);
+                currentOverlayIdentifier = "floor2";
+                Log.d("Current Overlay", "Current Overlay Identifier: " + currentOverlayIdentifier);
+            }
+        });
 
         Button changeOverlay3Button = findViewById(R.id.changeOverlay3Button);
-        changeOverlay3Button.setOnClickListener(v -> changeGroundOverlayImage(R.drawable.rhode3));
-    }
-
-    // Method to change ground overlay image
-    private void changeGroundOverlayImage(int resourceId) {
-        if (googleMap != null) {
-            // Default overlay image
-
-            LatLng bottomLeft = new LatLng(27.525847, -97.883013);
-            LatLng topRight = new LatLng(27.526364, -97.882575);
-            LatLngBounds overlayBounds = new LatLngBounds(bottomLeft, topRight);
-
-            // Remove existing overlays
-            for (GroundOverlay overlay : groundOverlays) {
-                overlay.remove();
+        changeOverlay3Button.setOnClickListener(v -> {
+            if (!"floor3".equals(currentOverlayIdentifier)) {
+                MapUtils.changeGroundOverlayImage(googleMap, groundOverlays, polyline, R.drawable.rhode3);
+                currentOverlayIdentifier = "floor3";
+                Log.d("Current Overlay", "Current Overlay Identifier: " + currentOverlayIdentifier);
             }
-            groundOverlays.clear();
+        });
 
-            // Add the new ground overlay
-            GroundOverlayOptions overlayOptions = new GroundOverlayOptions()
-                    .image(BitmapDescriptorFactory.fromResource(resourceId))
-                    .positionFromBounds(overlayBounds)
-                    .transparency(0.0f);
-            GroundOverlay overlay = googleMap.addGroundOverlay(overlayOptions);
-            groundOverlays.add(overlay);
-        }
+
     }
+
+
 
     @Override
     protected void onResume() {
@@ -150,6 +148,7 @@ public class floor1 extends AppCompatActivity implements OnMapReadyCallback {
         super.onLowMemory();
         mapView.onLowMemory();
     }
+    private Polyline polyline; // Declare class-level variable
 
     @Override
     public void onMapReady(@NonNull GoogleMap map) {

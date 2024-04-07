@@ -1,19 +1,22 @@
 package com.example.srproject;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.GroundOverlay;
+import com.google.android.gms.maps.model.GroundOverlayOptions;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
-import java.util.List;
-import android.content.Context;
+
 import java.util.ArrayList;
+import java.util.List;
 
 
 
@@ -73,4 +76,38 @@ public class MapUtils {
 
         return googleMap.addPolyline(polylineOptions);
     }
+    // Method to change ground overlay image
+    public static void changeGroundOverlayImage(GoogleMap googleMap, List<GroundOverlay> groundOverlays, Polyline polyline, int resourceId) {
+        if (googleMap != null) {
+            // Remove existing polyline
+            if (polyline != null) {
+                polyline.remove();
+            }
+
+            // Default overlay image
+            LatLng bottomLeft = new LatLng(27.525847, -97.883013);
+            LatLng topRight = new LatLng(27.526364, -97.882575);
+            LatLngBounds overlayBounds = new LatLngBounds(bottomLeft, topRight);
+
+            // Remove existing overlays
+            for (GroundOverlay overlay : groundOverlays) {
+                overlay.remove();
+            }
+            groundOverlays.clear();
+
+            // Add the new ground overlay
+            GroundOverlayOptions overlayOptions = new GroundOverlayOptions()
+                    .image(BitmapDescriptorFactory.fromResource(resourceId))
+                    .positionFromBounds(overlayBounds)
+                    .transparency(0.0f);
+            GroundOverlay overlay = googleMap.addGroundOverlay(overlayOptions);
+            groundOverlays.add(overlay);
+        }
+    }
+
 }
+
+
+
+
+
