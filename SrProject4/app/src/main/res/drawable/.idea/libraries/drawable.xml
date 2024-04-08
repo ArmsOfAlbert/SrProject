@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="drawable">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/SrProject.zip!/" />
+      <root url="jar://$PROJECT_DIR$/SrProjectwithmarkers.zip!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
