@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">SrProject</string>
+    <string name="title_activity_maps">MapsActivity</string>
+    <string name="activity">Activity</string>
+    <string name="back">Back</string>
+    <string name="todo">TODO</string>
+    <string name="liar">liar</string>
+</resources>
