@@ -64,9 +64,6 @@ public class MapUtils {
         return new Pair<>(markerGrid, latLngGrid);
     }
 
-    public static List<List<Marker>> getMarkerGrid() {
-        return markerGrid;
-    }
 
     public static Polyline drawLineBetweenLatLngs(GoogleMap googleMap, List<LatLng> latLngs) {
         if (googleMap == null || latLngs == null || latLngs.size() < 2) {
