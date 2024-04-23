@@ -73,7 +73,7 @@ public class floor1 extends AppCompatActivity implements OnMapReadyCallback {
 
         // Set callback for when the map is ready
         mapView.getMapAsync(this);
-        MapUtils.Graph graph = constructGraph(markerGrid);
+        MapUtils.Graph graph = constructGraph(latlngGrid);
 
         // Initialize SearchView
         // SearchView declaration
@@ -82,6 +82,19 @@ public class floor1 extends AppCompatActivity implements OnMapReadyCallback {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 try {
+                    googleMap.clear();
+                    switch (currentFloor) {
+                        case "rfloor1":
+                            MapUtils.changeGroundOverlayImage(googleMap, groundOverlays, polyline, R.drawable.rhode1);
+                            break;
+                        case "rfloor2":
+                            MapUtils.changeGroundOverlayImage(googleMap, groundOverlays, polyline, R.drawable.rhode2);
+                            break;
+                        case "rfloor3":
+                            MapUtils.changeGroundOverlayImage(googleMap, groundOverlays, polyline, R.drawable.rhode3);
+                            break;
+
+                    }
                     // this needs to change .. destination room has to be a marker or lat lng
                      roomTofindFloor = Integer.parseInt(query);
                     FloorIndex = roomTofindFloor % 100;//last 2 digits of query;
@@ -219,14 +232,14 @@ public class floor1 extends AppCompatActivity implements OnMapReadyCallback {
 
             if (destinationFloor.equals(currentFloor)) {
                 // They match, calculate shortest path from current location to destination room
-                List<LatLng> shortestPath = MapUtils.findShortestPath(markerGrid, usingElevator, destinationRoom);
+                List<LatLng> shortestPath = MapUtils.findShortestPath(latlngGrid, usingElevator, destinationRoom);
                 usingElevator = null;
                 Polyline shortestPathPolyline = MapUtils.drawLineBetweenLatLngs(googleMap, shortestPath);
                 Log.d("Floor Comparison", "Yes");
             }
             if (startingFloor.equals(currentFloor)) {
                 //usingElevator = findClosestElevator(currentLocation);
-                List<LatLng> shortestPath = MapUtils.findShortestPath(markerGrid, currentLocation, usingElevator);
+                List<LatLng> shortestPath = MapUtils.findShortestPath(latlngGrid, currentLocation, usingElevator);
                 Polyline shortestPathPolyline = MapUtils.drawLineBetweenLatLngs(googleMap, shortestPath);
 
             } else {
@@ -236,13 +249,13 @@ public class floor1 extends AppCompatActivity implements OnMapReadyCallback {
         } else {
             if (destinationFloor.equals(currentFloor)) {
                 // They match, calculate shortest path from current location to destination room
-                List<LatLng> shortestPath = MapUtils.findShortestPath(markerGrid, currentLocation, destinationRoom);
+                List<LatLng> shortestPath = MapUtils.findShortestPath(latlngGrid, currentLocation, destinationRoom);
                 Polyline shortestPathPolyline = MapUtils.drawLineBetweenLatLngs(googleMap, shortestPath);
                 Log.d("Floor Comparison", "Yes");
             }
             if (startingFloor.equals(currentFloor)) {
                 usingElevator = findClosestElevator(currentLocation);
-                List<LatLng> shortestPath = MapUtils.findShortestPath(markerGrid, currentLocation, usingElevator);
+                List<LatLng> shortestPath = MapUtils.findShortestPath(latlngGrid, currentLocation, usingElevator);
                 Polyline shortestPathPolyline = MapUtils.drawLineBetweenLatLngs(googleMap, shortestPath);
 
             }else {
@@ -260,20 +273,21 @@ public class floor1 extends AppCompatActivity implements OnMapReadyCallback {
         //ElevatorsList.add(latlngGrid.get(2).get(3));
         //ElevatorsList.add(latlngGrid.get(4).get(3));
         // Create a list to hold the elevators or stairways
-        List<Marker> elevatorsList = new ArrayList<>();
+        List<LatLng> elevatorsList = new ArrayList<>();
         // Add elevators or stairways to the list
-        elevatorsList.add(markerGrid.get(10).get(3));
-        elevatorsList.add(markerGrid.get(12).get(15));
-
+        elevatorsList.add(latlngGrid.get(19).get(12));
+        elevatorsList.add(latlngGrid.get(7).get(12));
+        elevatorsList.add(latlngGrid.get(1).get(7));
+        elevatorsList.add(latlngGrid.get(1).get(17));
 
         LatLng closestElevator = null;
         double shortestDistance = Double.MAX_VALUE;
 
         // Iterate through the list of elevators to find the closest one
-        for (Marker elevatorMarker : elevatorsList) {
+        for (LatLng elevatorMarker : elevatorsList) {
             // Calculate the shortest path to the elevator
-            LatLng elevator = elevatorMarker.getPosition();
-            List<LatLng> shortestPathToElevator = MapUtils.findShortestPath(markerGrid, startinglocationMarker.getPosition(), elevator);
+            LatLng elevator = elevatorMarker;
+            List<LatLng> shortestPathToElevator = MapUtils.findShortestPath(latlngGrid, startinglocationMarker.getPosition(), elevator);
 
             // Calculate the length of the shortest path
             double pathLength = MapUtils.calculatePathLength(shortestPathToElevator);

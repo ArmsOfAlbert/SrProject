@@ -77,13 +77,22 @@ public class MapUtils {
         for (LatLng latLng : latLngs) {
             polylineOptions.add(latLng);
         }
+        // Add markers on the first and last locations
+        if (!latLngs.isEmpty()) {
+            // First location
+            LatLng firstLocation = latLngs.get(0);
+            googleMap.addMarker(new MarkerOptions().position(firstLocation).title("Start"));
 
+            // Last location
+            LatLng lastLocation = latLngs.get(latLngs.size() - 1);
+            googleMap.addMarker(new MarkerOptions().position(lastLocation).title("End"));
+        }
         return googleMap.addPolyline(polylineOptions);
     }
 
-
     public static void changeGroundOverlayImage(GoogleMap googleMap, List<GroundOverlay> groundOverlays, Polyline polyline, int resourceId) {
         if (googleMap != null) {
+            googleMap.clear();
             if (polyline != null) {
                 polyline.remove();
             }
@@ -106,24 +115,24 @@ public class MapUtils {
         }
     }
 
-    public static List<LatLng> findShortestPath(List<List<Marker>> markerGrid, LatLng start, LatLng end) {
-        Graph graph = constructGraph(markerGrid);
+    public static List<LatLng> findShortestPath(List<List<LatLng>> latlngGrid, LatLng start, LatLng end) {
+        Graph graph = constructGraph(latlngGrid);
         return dijkstra(graph, start, end);
     }
 
-    public static Graph constructGraph(List<List<Marker>> markerGrid) {
+    public static Graph constructGraph(List<List<LatLng>> latlngGrid) {
         Graph graph = new Graph();
 
-        for (int i = 0; i < markerGrid.size(); i++) {
-            for (int j = 0; j < markerGrid.get(i).size(); j++) {
-                Marker currentMarker = markerGrid.get(i).get(j);
-                if (j < markerGrid.get(i).size() - 1) {
-                    Marker rightNeighbor = markerGrid.get(i).get(j + 1);
-                    graph.addEdge(currentMarker.getPosition(), rightNeighbor.getPosition(), calculateDistance(currentMarker.getPosition(), rightNeighbor.getPosition()));
+        for (int i = 0; i < latlngGrid.size(); i++) {
+            for (int j = 0; j < latlngGrid.get(i).size(); j++) {
+                LatLng currentMarker = latlngGrid.get(i).get(j);
+                if (j < latlngGrid.get(i).size() - 1) {
+                    LatLng rightNeighbor = latlngGrid.get(i).get(j + 1);
+                    graph.addEdge(currentMarker, rightNeighbor, calculateDistance(currentMarker, rightNeighbor));
                 }
-                if (i < markerGrid.size() - 1) {
-                    Marker bottomNeighbor = markerGrid.get(i + 1).get(j);
-                    graph.addEdge(currentMarker.getPosition(), bottomNeighbor.getPosition(), calculateDistance(currentMarker.getPosition(), bottomNeighbor.getPosition()));
+                if (i < latlngGrid.size() - 1) {
+                    LatLng bottomNeighbor = latlngGrid.get(i + 1).get(j);
+                    graph.addEdge(currentMarker, bottomNeighbor, calculateDistance(currentMarker, bottomNeighbor));
                 }
             }
         }
